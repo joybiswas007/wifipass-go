@@ -14,7 +14,7 @@ A simple command-line tool written in Golang to retrieve WiFi credentials and ge
 ## Installation ⚡  
 ```
 git clone https://github.com/joybiswas007/wifipass-go.git
-cd wifi-pass-go
+cd wifipass-go
 make deps
 make build
 sudo mv binaryName /usr/local/bin/
