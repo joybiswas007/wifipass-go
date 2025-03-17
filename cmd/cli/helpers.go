@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"runtime/debug"
 	"strings"
+	"syscall"
 
 	"github.com/skip2/go-qrcode"
 	"gopkg.in/ini.v1"
@@ -63,14 +64,22 @@ func checkRootPrivileges() error {
 
 // getSSID retrieves the currently connected WiFi SSID
 func getSSID() (string, error) {
-	if _, err := exec.LookPath("iwgetid"); err != nil {
-		return "", err
-	}
-
 	cmd := exec.Command("iwgetid", "-r")
+
 	ssid, err := cmd.CombinedOutput()
 	if err != nil {
-		return "", err
+		// Check if the error is due to "exit status 255"
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			// Extract the exit status code
+			if status, ok := exitErr.Sys().(syscall.WaitStatus); ok {
+				switch status.ExitStatus() {
+				case 255:
+					return "", errors.New("You're not connected to any WiFi network.")
+				default:
+					return "", err
+				}
+			}
+		}
 	}
 
 	return strings.TrimSpace(string(ssid)), nil

@@ -11,14 +11,17 @@ A simple command-line tool written in Golang to retrieve WiFi credentials and ge
 - 💾 **Save the QR code to a file**  
 - 🩺 **Run a diagnostic check for necessary dependencies**  
 
+#### Note: Make sure go1.23.0 or later version is already installed on you system.
+
 ## Installation ⚡  
 ```
 git clone https://github.com/joybiswas007/wifipass-go.git
 cd wifipass-go
 make deps
 make build
-sudo mv binaryName /usr/local/bin/
-binaryName --help
+sudo mv wifipass /usr/local/bin/
+wifipass --help
+wifipass --doctor (Check if all required dependencies are installed)
 ```
 
 ## Usage

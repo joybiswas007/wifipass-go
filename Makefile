@@ -2,7 +2,7 @@
 BINARY = wifipass
 
 # Define source directories
-SRC_DIR = ./cmd/wifipass/
+SRC_DIR = ./cmd/cli/
 
 # Compiler flags
 GOFLAGS = -ldflags="-s -w"
@@ -24,7 +24,7 @@ deps:
 
 # Format code
 fmt:
-	go fmt .
+	go fmt ./...
 
 # Lint the code (requires golangci-lint)
 lint:
