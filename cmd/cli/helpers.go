@@ -15,7 +15,12 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-const networkConfigDir = "/etc/NetworkManager/system-connections/"
+const (
+	networkConfigDir = "/etc/NetworkManager/system-connections/"
+	appName          = "wifipass"
+	author           = "Joy Biswas"
+	email            = "joybiswas040701@gmail.com"
+)
 
 // config holds the command-line options for the WiFi tool
 type config struct {
@@ -41,6 +46,9 @@ type config struct {
 // parseFlags parses the command-line flags provided by the user and returns a config struct.
 func parseFlags() config {
 	var cfg config
+
+	// Override default usage message
+	flag.Usage = usage
 
 	flag.BoolVar(&cfg.list, "list", false, "List previously connected WiFi networks (run as sudo)")
 	flag.BoolVar(&cfg.qr, "qr", false, "Generate QR code for the current WiFi password and display it")
@@ -179,4 +187,15 @@ func Version() string {
 	}
 
 	return fmt.Sprintf("%s-%s", time, revision)
+}
+
+// Custom usage function
+func usage() {
+	fmt.Fprintf(os.Stderr, `%s - A simple CLI tool written in Golang to retrieve WiFi credentials and generate QR codes for easy sharing
+
+Author: %s <%s>
+
+Usage:
+`, appName, author, email)
+	flag.PrintDefaults()
 }
