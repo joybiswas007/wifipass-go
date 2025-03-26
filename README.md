@@ -1,7 +1,7 @@
 # wifipass-go🚀  
 A simple command-line tool written in Golang to retrieve WiFi credentials and generate QR codes for easy sharing.  
 
-#### Note: Currently tested on Linux. In future will add MacOS and Windows support.
+#### Note: Tested on Linux ONLY.
 
 ## Features ✅  
 - 📶 **Show current WiFi password**  
