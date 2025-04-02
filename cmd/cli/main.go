@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"github.com/skip2/go-qrcode"
 )
 
 var (
@@ -73,13 +75,21 @@ func main() {
 			qrPath = fmt.Sprintf("%s.png", ssid)
 		}
 
-		err = generateQRCode(ssid, password, qrPath)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("QR code saved as %s\n", qrPath)
+		wifiConfig := fmt.Sprintf("WIFI:T:WPA;S:%s;P:%s;;", ssid, password)
 
-		os.Exit(0)
+		if cfg.saveQr {
+			err := qrcode.WriteFile(wifiConfig, qrcode.Medium, 256, qrPath)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Printf("QR code saved as %s\n", qrPath)
+
+			os.Exit(0)
+		}
+
+		qrCode, _ := qrcode.New(wifiConfig, qrcode.Medium)
+		fmt.Println(qrCode.ToString(true))
 	}
 
 	fmt.Printf("📶 WiFi: %s 🔑 Password: %s\n", ssid, password)

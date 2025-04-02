@@ -26,19 +26,21 @@ wifipass --doctor (Check if all required dependencies are installed)
 
 ## Usage
 ```
-Usage of wifipass:
+Usage:
   -connection string
-    	Show password for a specific WiFi connection (run as sudo)
+        Show password for a specific WiFi connection (run as sudo)
   -doctor
-    	Run diagnostics to check WiFi settings, configurations, and required packages
+        Run diagnostics to check WiFi settings, configurations, and required packages
   -list
-    	List previously connected WiFi networks (run as sudo)
+        List previously connected WiFi networks (run as sudo)
   -qr
-    	Generate QR code for the current WiFi password and display it
+        Generate QR code for the current WiFi password and display it
   -qr-path string
-    	Specify path to save the QR code
+        Specify path to save the QR code
+  -save-qr
+        Save the generated QR code to a file instead of displaying it
   -version
-    	Display version and exit
+        Display version and exit
 ```
 ## Note: Some commands require sudo access.
 

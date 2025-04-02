@@ -11,7 +11,6 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/skip2/go-qrcode"
 	"gopkg.in/ini.v1"
 )
 
@@ -29,6 +28,9 @@ type config struct {
 
 	// - qr: Generates and displays a QR code for the current WiFi password
 	qr bool
+
+	// - saveQr: When true, saves the generated QR code to a file instead of displaying it
+	saveQr bool
 
 	// - qrPath: Specifies the file path to save the QR code
 	qrPath string
@@ -52,6 +54,7 @@ func parseFlags() config {
 
 	flag.BoolVar(&cfg.list, "list", false, "List previously connected WiFi networks (run as sudo)")
 	flag.BoolVar(&cfg.qr, "qr", false, "Generate QR code for the current WiFi password and display it")
+	flag.BoolVar(&cfg.saveQr, "save-qr", false, "Save the generated QR code to a file instead of displaying it")
 	flag.StringVar(&cfg.qrPath, "qr-path", "", "Specify path to save the QR code")
 	flag.StringVar(&cfg.connection, "connection", "", "Show password for a specific WiFi connection (run as sudo)")
 	flag.BoolVar(&cfg.doctor, "doctor", false, "Run diagnostics to check WiFi settings, configurations, and required packages")
@@ -123,19 +126,6 @@ func getWifiPassword(configFile string) (string, error) {
 		return "", err
 	}
 	return cfg.Section("wifi-security").Key("psk").String(), nil
-}
-
-// generateQRCode creates and displays a QR code for the WiFi credentials
-func generateQRCode(ssid, password, path string) error {
-	wifiConfig := fmt.Sprintf("WIFI:T:WPA;S:%s;P:%s;;", ssid, password)
-	err := qrcode.WriteFile(wifiConfig, qrcode.Medium, 256, path)
-	if err != nil {
-		return err
-	}
-
-	qrCode, _ := qrcode.New(wifiConfig, qrcode.Low)
-	fmt.Println(qrCode.ToString(true))
-	return nil
 }
 
 // checkDependencies verifies if required commands are installed
