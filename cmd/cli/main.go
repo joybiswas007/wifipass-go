@@ -38,8 +38,27 @@ func main() {
 
 		fmt.Println("Previously connected WiFi networks:")
 		for _, conn := range connections {
-			fmt.Println("📶", strings.TrimSuffix(conn, ".nmconnection"))
+			network := strings.TrimSuffix(conn, ".nmconnection")
+
+			if cfg.showPass {
+				connFile, err := findConnectionFile(network)
+				if err != nil {
+					fmt.Printf("📶 %s (could not retrieve connection file: %v)\n", network, err)
+					continue
+				}
+
+				password, err := getWifiPassword(connFile)
+				if err != nil {
+					fmt.Printf("📶 %s (could not retrieve password: %v)\n", network, err)
+					continue
+				}
+
+				fmt.Printf("📶 %-20s 🔑 %s\n", network, password)
+			} else {
+				fmt.Println("📶", network)
+			}
 		}
+
 		os.Exit(0)
 	}
 
@@ -69,15 +88,14 @@ func main() {
 	}
 
 	if cfg.qr {
-		qrPath := cfg.qrPath
-
-		if cfg.qrPath == "" {
-			qrPath = fmt.Sprintf("%s.png", ssid)
-		}
-
 		wifiConfig := fmt.Sprintf("WIFI:T:WPA;S:%s;P:%s;;", ssid, password)
 
 		if cfg.saveQr {
+			qrPath := cfg.qrPath
+
+			if cfg.qrPath == "" {
+				qrPath = fmt.Sprintf("%s.png", ssid)
+			}
 			err := qrcode.WriteFile(wifiConfig, qrcode.Medium, 256, qrPath)
 			if err != nil {
 				log.Fatal(err)

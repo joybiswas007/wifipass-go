@@ -39,6 +39,8 @@ Usage:
         Specify path to save the QR code
   -save-qr
         Save the generated QR code to a file instead of displaying it
+  -show-pass
+        Display passwords when listing networks
   -version
         Display version and exit
 ```

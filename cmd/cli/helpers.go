@@ -26,6 +26,9 @@ type config struct {
 	// - list: Lists previously connected WiFi networks
 	list bool
 
+	// - showPass: Display passwords when listing networks
+	showPass bool
+
 	// - qr: Generates and displays a QR code for the current WiFi password
 	qr bool
 
@@ -53,6 +56,7 @@ func parseFlags() config {
 	flag.Usage = usage
 
 	flag.BoolVar(&cfg.list, "list", false, "List previously connected WiFi networks (run as sudo)")
+	flag.BoolVar(&cfg.showPass, "show-pass", false, "Display passwords when listing networks")
 	flag.BoolVar(&cfg.qr, "qr", false, "Generate QR code for the current WiFi password and display it")
 	flag.BoolVar(&cfg.saveQr, "save-qr", false, "Save the generated QR code to a file instead of displaying it")
 	flag.StringVar(&cfg.qrPath, "qr-path", "", "Specify path to save the QR code")
